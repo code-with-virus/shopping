@@ -18,12 +18,27 @@ import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 // IMPORTANT: REPLACE WITH YOUR FIREBASE CONFIGURATION
 // =================================================================================
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDXWtUOAGubvW30oMtJ3TU6-cLXAgrRoaw",
+  authDomain: "smart-billing-e6aaa.firebaseapp.com",
+  projectId: "smart-billing-e6aaa",
+  storageBucket: "smart-billing-e6aaa.firebasestorage.app",
+  messagingSenderId: "931796749105",
+  appId: "1:931796749105:web:ee78202f14fe65d9bb7e10",
+  measurementId: "G-MK2QQB0Y6J"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 };
 
 // Initialize Firebase
