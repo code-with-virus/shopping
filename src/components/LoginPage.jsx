@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import BillingPage from './BillingPage'; // Import the main app page
+import BillingPage from './BillingPage';
 
-// FIREBASE IMPORTS
+// FIREBASE IMPORTS (Moved to the correct location at the top)
 import { initializeApp } from 'firebase/app';
 import {
     getAuth,
@@ -15,30 +15,16 @@ import {
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 
 // =================================================================================
-// IMPORTANT: REPLACE WITH YOUR FIREBASE CONFIGURATION
+// PASTE YOUR FIREBASE CONFIGURATION HERE
 // =================================================================================
 const firebaseConfig = {
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDXWtUOAGubvW30oMtJ3TU6-cLXAgrRoaw",
+   apiKey: "AIzaSyDXWtUOAGubvW30oMtJ3TU6-cLXAgrRoaw",
   authDomain: "smart-billing-e6aaa.firebaseapp.com",
   projectId: "smart-billing-e6aaa",
   storageBucket: "smart-billing-e6aaa.firebasestorage.app",
   messagingSenderId: "931796749105",
   appId: "1:931796749105:web:ee78202f14fe65d9bb7e10",
   measurementId: "G-MK2QQB0Y6J"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 };
 
 // Initialize Firebase
@@ -71,7 +57,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // Start as true to check auth status
+    const [isLoading, setIsLoading] = useState(true);
     const [notification, setNotification] = useState('');
 
     useEffect(() => {
@@ -87,7 +73,7 @@ const LoginPage = () => {
             } else {
                 setUser(null);
             }
-            setIsLoading(false); // Finished checking auth
+            setIsLoading(false);
         });
         return () => unsubscribe();
     }, []);
@@ -196,34 +182,4 @@ const LoginPage = () => {
                         )}
                         <div className="mb-4">
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required />
-                        </div>
-                        <div className="mb-6">
-                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required />
-                        </div>
-                        <button type="submit" disabled={isLoading} className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400">
-                            {isLogin ? 'Log In' : 'Sign Up'}
-                        </button>
-                    </form>
-                    <div className="mt-6 relative">
-                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300" /></div>
-                        <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div>
-                    </div>
-                    <div className="mt-6">
-                         <button onClick={handleGoogleSignIn} disabled={isLoading} className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100">
-                            Sign in with Google
-                        </button>
-                    </div>
-                </div>
-                 <div className="mt-6 text-center">
-                    <button onClick={() => setIsLogin(!isLogin)} className="font-medium text-indigo-600 hover:text-indigo-500">
-                        {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Log In'}
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default LoginPage;
+                            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-2 border border-gray
