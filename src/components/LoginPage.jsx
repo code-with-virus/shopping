@@ -264,7 +264,7 @@ const Modal = ({ message, onClose }) => {
             </div>
         </div>
     );
-};
+}; 
 
 const LoginPage = () => {
     const [isLogin, setIsLogin] = useState(true);
