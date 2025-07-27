@@ -1,9 +1,11 @@
-import BillingPage from './components/BillingPage';
-import './index.css';
+import React from 'react';
+import LoginPage from './components/LoginPage';
 
 function App() {
   return (
-    <BillingPage />
+    <div className="App">
+      <LoginPage />
+    </div>
   );
 }
 
