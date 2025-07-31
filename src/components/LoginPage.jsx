@@ -127,15 +127,15 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition duration-300 flex items-center justify-center px-4">
       <Modal message={notification} onClose={() => setNotification('')} />
-      <div className="absolute top-4 right-4">
-        <button
-          onClick={toggleTheme}
-          className="text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-          title="Toggle Dark Mode"
-        >
-          {darkMode ? '🌙' : '🌞'}
-        </button>
-      </div>
+  <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col justify-center items-center p-4 font-sans relative">
+    
+    {/* 🔘 Dark Mode Toggle */}
+    <button
+      onClick={() => document.documentElement.classList.toggle('dark')}
+      className="absolute top-4 right-4 bg-gray-200 dark:bg-gray-800 text-sm px-3 py-1 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+    >
+      Toggle Dark Mode
+    </button>
       <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-8">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">Smart Shopping</h1>
