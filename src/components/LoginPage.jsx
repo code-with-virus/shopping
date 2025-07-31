@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import BillingPage from './BillingPage';
-
-// FIREBASE IMPORTS
 import { initializeApp } from 'firebase/app';
 import {
     getAuth,
@@ -13,28 +11,30 @@ import {
     signOut,
 } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { FcGoogle } from 'react-icons/fc';
+import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
 // =================================================================================
-// PASTE YOUR FIREBASE CONFIGURATION HERE
+// FIREBASE CONFIG
 // =================================================================================
 const firebaseConfig = {
-   apiKey: "AIzaSyDXWtUOAGubvW30oMtJ3TU6-cLXAgrRoaw",
+  apiKey: "AIzaSyDXWtUOAGubvW30oMtJ3TU6-cLXAgrRoaw",
   authDomain: "smart-billing-e6aaa.firebaseapp.com",
   projectId: "smart-billing-e6aaa",
   storageBucket: "smart-billing-e6aaa.firebasestorage.app",
   messagingSenderId: "931796749105",
   appId: "1:931796749105:web:ee78202f14fe65d9bb7e10",
   measurementId: "G-MK2QQB0Y6J"
-
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Custom Modal Component for Notifications
+// =================================================================================
+// Modal
+// =================================================================================
 const Modal = ({ message, onClose }) => {
     if (!message) return null;
     return (
@@ -52,6 +52,9 @@ const Modal = ({ message, onClose }) => {
     );
 };
 
+// =================================================================================
+// Login Page
+// =================================================================================
 const LoginPage = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
@@ -66,14 +69,10 @@ const LoginPage = () => {
             if (currentUser) {
                 const userDocRef = doc(db, "users", currentUser.uid);
                 const userDoc = await getDoc(userDocRef);
-                if (userDoc.exists()) {
-                    setUser({ uid: currentUser.uid, ...userDoc.data() });
-                } else {
-                    setUser({ uid: currentUser.uid, email: currentUser.email });
-                }
-            } else {
-                setUser(null);
-            }
+                setUser(userDoc.exists()
+                    ? { uid: currentUser.uid, ...userDoc.data() }
+                    : { uid: currentUser.uid, email: currentUser.email });
+            } else setUser(null);
             setIsLoading(false);
         });
         return () => unsubscribe();
@@ -155,56 +154,101 @@ const LoginPage = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <p className="text-xl text-gray-600">Loading...</p>
             </div>
         );
     }
 
-    if (user) {
-        return <BillingPage user={user} onSignOut={handleSignOut} />;
-    }
+    if (user) return <BillingPage user={user} onSignOut={handleSignOut} />;
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4 font-sans">
+        <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-indigo-100 to-white p-6">
             <Modal message={notification} onClose={() => setNotification('')} />
-            <div className="max-w-md w-full mx-auto">
-                 <div className="text-center mb-6">
-                    <h1 className="text-3xl font-bold text-gray-800">Smart Shopping</h1>
-                    <p className="text-gray-500">{isLogin ? 'Welcome back! Please log in.' : 'Create an account.'}</p>
+
+            {/* Side Graphic */}
+            <div className="md:w-1/2 mb-10 md:mb-0 flex justify-center">
+                <img
+                    src="https://cdn-icons-png.flaticon.com/512/3712/3712105.png"
+                    alt="shopping"
+                    className="w-72 drop-shadow-xl animate-bounce-slow"
+                />
+            </div>
+
+            {/* Auth Form */}
+            <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+                <div className="text-center mb-6">
+                    <h1 className="text-3xl font-bold text-indigo-700">Smart Shopping</h1>
+                    <p className="text-sm text-gray-500">
+                        {isLogin ? 'Welcome back! Please log in.' : 'Create your smart shopping account.'}
+                    </p>
                 </div>
-                <div className="bg-white p-8 rounded-xl shadow-lg">
-                    <form onSubmit={handleAuthAction}>
-                        {!isLogin && (
-                             <div className="mb-4">
-                                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required={!isLogin} />
-                            </div>
-                        )}
-                        <div className="mb-4">
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required />
+                <form onSubmit={handleAuthAction}>
+                    {!isLogin && (
+                        <div className="mb-4 relative">
+                            <FaUser className="absolute left-3 top-3 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                required
+                            />
                         </div>
-                        <div className="mb-6">
-                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required />
-                        </div>
-                        <button type="submit" disabled={isLoading} className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400">
-                            {isLoading ? 'Processing...' : (isLogin ? 'Log In' : 'Sign Up')}
-                        </button>
-                    </form>
-                    <div className="mt-6 relative">
-                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300" /></div>
-                        <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div>
+                    )}
+                    <div className="mb-4 relative">
+                        <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            required
+                        />
                     </div>
-                    <div className="mt-6">
-                         <button onClick={handleGoogleSignIn} disabled={isLoading} className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100">
-                            Sign in with Google
-                        </button>
+                    <div className="mb-6 relative">
+                        <FaLock className="absolute left-3 top-3 text-gray-400" />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            required
+                        />
                     </div>
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                    >
+                        {isLoading ? 'Processing...' : (isLogin ? 'Log In' : 'Sign Up')}
+                    </button>
+                </form>
+
+                {/* Or divider */}
+                <div className="mt-6 flex items-center justify-between">
+                    <div className="w-full border-t border-gray-300" />
+                    <span className="mx-2 text-gray-400 text-sm">or</span>
+                    <div className="w-full border-t border-gray-300" />
                 </div>
-                 <div className="mt-6 text-center">
-                    <button onClick={() => setIsLogin(!isLogin)} className="font-medium text-indigo-600 hover:text-indigo-500">
+
+                <button
+                    onClick={handleGoogleSignIn}
+                    disabled={isLoading}
+                    className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 text-gray-700"
+                >
+                    <FcGoogle size={20} />
+                    Sign in with Google
+                </button>
+
+                <div className="mt-6 text-center">
+                    <button
+                        onClick={() => setIsLogin(!isLogin)}
+                        className="text-indigo-600 hover:text-indigo-500 font-medium"
+                    >
                         {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Log In'}
                     </button>
                 </div>
